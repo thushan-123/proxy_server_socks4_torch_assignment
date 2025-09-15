@@ -6,12 +6,11 @@ import (
 	"go-proxy-server/proxy"
 	"log"
 	"net"
-	
 )
 
 func main() {
 
-
+	Init() // logging
 	config := configuration.SocketConfigeration()
 
 	// listening
