@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/binary"
 	"errors"
 	"io"
 	"net"
@@ -29,27 +30,41 @@ func ReadRequest(user net.Conn) (string, int, error) {
 	atyp := buf[3]
 	var addr string
 
-	if atyp == atypIPv4 {
+	switch atyp {
+	case atypIPv4:
 		buf = make([]byte, 4)
 		if _, err := io.ReadFull(user, buf); err != nil {
 			return "", 0, err
 		}
 		addr = net.IP(buf).String()
-	}
-
-	if atyp == atypDomain {
+	case atypDomain:
 		buf = make([]byte, 1)
 		if _, err := io.ReadFull(user, buf); err != nil {
 			return "", 0, err
 		}
-		domainLength := int(buf[0])
-		domain := make([]byte, domainLength)
-
+		domainLen := int(buf[0])
+		domain := make([]byte, domainLen)
 		if _, err := io.ReadFull(user, domain); err != nil {
 			return "", 0, err
 		}
 		addr = string(domain)
-
+	case atypIPv6:
+		buf = make([]byte, 16)
+		if _, err := io.ReadFull(user, buf); err != nil {
+			return "", 0, err
+		}
+		addr = net.IP(buf).String()
+	default:
+		return "", 0, errors.New("unsupported address type")
 	}
+
+	// read port
+	buf = make([]byte, 2)
+	if _, err := io.ReadFull(user, buf); err != nil {
+		return "", 0, err
+	}
+	port := int(binary.BigEndian.Uint16(buf))
+	
+	return addr, port, nil
 
 }
