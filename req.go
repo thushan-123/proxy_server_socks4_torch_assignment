@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	socksVersion = 0x01
+	//socksVersion = 0x05
 	cmd          = 0x01
 	atypIPv4     = 0x01
 	atypDomain   = 0x03
