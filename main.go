@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"go-proxy-server/configuration"
+	"go-proxy-server/proxy"
+	"log"
 	"net"
 )
 
@@ -10,26 +12,23 @@ func main() {
 
 	config := configuration.SocketConfigeration()
 
-	listing, err := net.Listen("tcp", config.Address)
-
+	// listening
+	listener, err := net.Listen("tcp", config.Address)
 	if err != nil {
-		fmt.Println("fail listing") // fail to lisning
+		log.Fatalf("failed to listen on %s: %v", config.Address, err)
 	}
+	defer listener.Close()
 
-	defer listing.Close() // close the connection
-
-	println("SOCKS5 proxy run %s", config.Address)
+	fmt.Printf("SOCKS5 proxy running on %s\n", config.Address)
 
 	for {
-		connection, err := listing.Accept()
-
+		conn, err := listener.Accept()
 		if err != nil {
-			fmt.Println("error accept connection %v", err)
-			continue // error occour after re run server
+			log.Printf("failed to accept connection: %v", err)
+			continue
 		}
 
-		fmt.Println("accept -> ", connection.RemoteAddr())
-
-		connection.Close()
+		//client connection handle  concurrently
+		go proxy.HandleConnection(conn, config)
 	}
 }
