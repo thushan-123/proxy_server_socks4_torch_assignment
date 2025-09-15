@@ -64,7 +64,34 @@ func ReadRequest(user net.Conn) (string, int, error) {
 		return "", 0, err
 	}
 	port := int(binary.BigEndian.Uint16(buf))
-	
+
 	return addr, port, nil
 
+}
+
+func SendResponse(user net.Conn, status byte, addr string, port int) error {
+
+	res := []byte{socksVersion, status, 0x00}
+
+	// check ip
+	if ip := net.ParseIP(addr); ip != nil {
+		if ip.To4() != nil {
+			res = append(res, atypIPv4)
+			res = append(res, ip.To4()...)
+		} else {
+			res = append(res, atypIPv6)
+			res = append(res, ip...)
+		}
+	} else {
+		res = append(res, atypDomain)
+		res = append(res, byte(len(addr)))
+		res = append(res, addr...)
+	}
+
+	portBytes := make([]byte, 2)
+	binary.BigEndian.PutUint16(portBytes, uint16(port))
+	res = append(res, portBytes...)
+
+	_, err := user.Write(res)
+	return err
 }
