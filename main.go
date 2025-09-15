@@ -10,7 +10,8 @@ import (
 
 func main() {
 
-	Init() // logging
+	Init()
+
 	config := configuration.SocketConfigeration()
 
 	// listening

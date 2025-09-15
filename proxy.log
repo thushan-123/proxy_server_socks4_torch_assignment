@@ -1,0 +1,4 @@
+2025/09/15 18:14:04 connection.go:18: new connection from 127.0.0.1
+2025/09/15 18:14:04 connection.go:30: authentication failed: invalied credentials
+2025/09/15 18:14:21 connection.go:18: new connection from 127.0.0.1
+2025/09/15 18:14:21 connection.go:60: forwarding 127.0.0.1 -> 34.117.59.81:443
