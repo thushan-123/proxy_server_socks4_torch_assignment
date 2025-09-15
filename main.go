@@ -39,5 +39,16 @@ func main() {
 
 	defer listing.Close() // close the connection
 
-	println("SOCKS5 proxy run ")
+	println("SOCKS5 proxy run %s", config.address)
+
+	for {
+		_, err := listing.Accept()
+
+		if err != nil {
+			fmt.Println("error accept connection %v", err)
+			continue // error occour after re run server
+		}
+
+		fmt.Println("accept -> ")
+	}
 }
