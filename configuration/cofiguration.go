@@ -10,13 +10,18 @@ type Socket struct {
 
 func SocketConfigeration() Socket {
 	port := os.Getenv("PROXY_PORT")
+	host := os.Getenv("HOST")
 
 	if port == "" {
 		port = "1080"
 	}
 
+	if host == "" {
+		host = "localhost"
+	}
+
 	return Socket{
-		Address:  "localhost:" + port,
+		Address:  host + ":" + port,
 		Username: "admin",
 		Password: "password",
 	}
