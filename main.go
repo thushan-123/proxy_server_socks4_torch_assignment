@@ -1,22 +1,26 @@
 package main
 
-import "os"
+import (
+	"fmt"
+	"net"
+	"os"
+)
 
 type Socket struct {
-	address string
+	address  string
 	username string
 	password string
 }
 
-func socketConfigeration () Socket {
+func socketConfigeration() Socket {
 	port := os.Getenv("PROXY_PORT")
 
-	if port == "" { 
+	if port == "" {
 		port = "1080"
 	}
 
 	return Socket{
-		address: ":" + port,
+		address:  "localhost:" + port,
 		username: "admin",
 		password: "password",
 	}
@@ -25,6 +29,15 @@ func socketConfigeration () Socket {
 
 func main() {
 
+	config := socketConfigeration()
 
+	listing, err := net.Listen("tcp", config.address)
 
+	if err != nil {
+		fmt.Println("fail listing") // fail to lisning
+	}
+
+	defer listing.Close() // close the connection
+
+	println("SOCKS5 proxy run ")
 }
