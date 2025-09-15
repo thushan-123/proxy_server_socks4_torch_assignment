@@ -15,6 +15,7 @@ func main() {
 	// listening
 	listener, err := net.Listen("tcp", config.Address)
 	if err != nil {
+		fmt.Printf("failed to listen on %s: %v\n", config.Address, err)
 		log.Fatalf("failed to listen on %s: %v", config.Address, err)
 	}
 	defer listener.Close()
@@ -24,6 +25,7 @@ func main() {
 	for {
 		conn, err := listener.Accept()
 		if err != nil {
+			fmt.Printf("failed to accept connection: %v\n", err)
 			log.Printf("failed to accept connection: %v", err)
 			continue
 		}
