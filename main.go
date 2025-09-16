@@ -10,7 +10,7 @@ import (
 
 func main() {
 
-	Init()
+	InitLogs()
 
 	config := configuration.SocketConfigeration()
 
