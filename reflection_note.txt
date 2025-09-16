@@ -1,0 +1,27 @@
+Reflection Note 
+
+---What I had to learn---
+
+I understand how SOCKS5 protocol works -> handshake steps, login/authentication, and the request/response messages. 
+i studied the RFC 1928 and also looked at examples to see how implement it. 
+i handle different types of addresses (IPv4, IPv6, domain names). 
+
+--How I approached debugging---
+
+I built the program step by step and tested each part on its own. 
+ 
+For the login step, I made small test clients to check if the byte-level communication was right. 
+i also added logging to follow the data as it moved through the process.
+when I had problems with certain clients (curl), 
+i checked their source code and documentation to see what they expected from a SOCKS5 server.
+
+---Improvements Proxy Server---
+
+1. allow credentials file (not hardcoded).
+2. add clearer error handling and messages.
+3. support UDP connection
+4. add connection timeouts and better resource management.
+5. improve performance so it can handle more users at once.
+
+
+
