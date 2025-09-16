@@ -5,6 +5,7 @@ Reflection Note
 I understand how SOCKS5 protocol works -> handshake steps, login/authentication, and the request/response messages. 
 i studied the RFC 1928 and also looked at examples to see how implement it. 
 i handle different types of addresses (IPv4, IPv6, domain names). 
+handle concurrent users using gorouting
 
 --How I approached debugging---
 
@@ -21,7 +22,7 @@ i checked their source code and documentation to see what they expected from a S
 2. add clearer error handling and messages.
 3. support UDP connection
 4. add connection timeouts and better resource management.
-5. improve performance so it can handle more users at once.
+
 
 
 
